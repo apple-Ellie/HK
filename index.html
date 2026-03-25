@@ -34,7 +34,6 @@
         .active-tab { color: var(--fuji-blue); border-bottom: 3px solid var(--fuji-blue); }
         .active-day { background-color: var(--fuji-blue); color: white; transform: scale(1.05); }
         
-        /* 標籤樣式 */
         .cat-tag { font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 99px; text-transform: uppercase; }
         .cat-food { background: #FFB7B2; color: #fff; }
         .cat-spot { background: #B2E2F2; color: #4A90E2; }
@@ -44,7 +43,6 @@
 
         input[type="checkbox"]:checked + span { text-decoration: line-through; color: #BBB; }
 
-        /* 照片預覽樣式 */
         .photo-preview {
             width: 80px;
             height: 80px;
@@ -54,14 +52,12 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* 動畫 */
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="pb-32">
 
-    <!-- Header -->
     <header class="fuji-bg text-white p-6 pt-10 rounded-japanese -mt-6 shadow-lg sticky top-0 z-50">
         <div class="flex justify-between items-end">
             <div>
@@ -73,7 +69,6 @@
                 <p class="text-xs font-bold">登臺酒店</p>
             </div>
         </div>
-        <!-- Tabs -->
         <div class="flex justify-around mt-6 bg-white/10 rounded-full p-1">
             <button onclick="switchTab('itinerary')" id="t-itinerary" class="flex-1 py-2 text-sm font-bold active-tab text-white border-b-0">行程</button>
             <button onclick="switchTab('guide')" id="t-guide" class="flex-1 py-2 text-sm font-bold text-white/60">指南</button>
@@ -82,10 +77,7 @@
     </header>
 
     <main class="mt-4 px-4">
-        
-        <!-- 行程頁面 -->
         <div id="itinerary-section">
-            <!-- Day Selector -->
             <div class="flex space-x-3 overflow-x-auto py-2 no-scrollbar mb-4">
                 <button onclick="switchDay(1)" id="d1" class="day-btn flex-shrink-0 w-16 h-16 rounded-japanese bg-white card-shadow flex flex-col items-center justify-center transition-all active-day">
                     <span class="text-[10px]">3/26</span><span class="text-lg font-bold">D1</span>
@@ -101,7 +93,6 @@
                 </button>
             </div>
 
-            <!-- Day 1: 3/26 Arrival -->
             <div id="content-d1" class="day-content fade-in space-y-4">
                 <div class="bg-white p-5 rounded-japanese card-shadow border-l-8 border-fuji">
                     <div class="flex justify-between items-center mb-2">
@@ -111,67 +102,86 @@
                     <h3 class="font-bold text-lg text-gray-800">桃園機場 T1 → 香港機場</h3>
                     <p class="text-xs text-gray-500 mt-1">手提行李 7KG (去程無托運)。<br>抵達後領取八達通/網卡。</p>
                 </div>
-                <div class="bg-white p-5 rounded-japanese card-shadow border-l-8 border-purple-300">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="cat-tag cat-hotel">接駁</span>
-                        <span class="text-[10px] font-bold fuji-text">00:00 - 00:30</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-gray-800">麗豪航天城酒店入住</h3>
-                    <p class="text-xs text-gray-500 mt-1">接駁車月台：9-11號月台<br>班次：00:00 / 00:15 / 00:30 (準時發車)</p>
+            </div>
+
+            <div id="content-d2" class="day-content hidden fade-in space-y-4 pb-10">
+                <div class="bg-white p-5 rounded-japanese card-shadow border-l-8 border-blue-400">
+                    <h3 class="font-bold text-lg text-gray-800">纜車、大佛與大澳漁村</h3>
+                    <p class="text-xs text-gray-500 mb-2">15:00 巴士 21 號回程</p>
+                    <div id="photo-container-d2" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+                    <input type="file" id="photo-input-d2" accept="image/*" multiple class="hidden" onchange="handlePhotoUpload(this, 'photo-container-d2')">
+                    <button onclick="document.getElementById('photo-input-d2').click()" class="mt-2 w-full py-2 bg-fuji/10 border border-dashed border-fuji/40 rounded-xl text-[11px] font-bold text-fuji">📷 新增 21 巴士時刻表</button>
                 </div>
             </div>
 
-            <!-- Day 2: 3/27 Lantau & Jordan -->
-            <div id="content-d2" class="day-content hidden fade-in space-y-4 pb-10">
+            <div id="content-d3" class="day-content hidden fade-in space-y-4 pb-10">
                 <div class="bg-white p-5 rounded-japanese card-shadow">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="cat-tag cat-trans">接駁</span>
-                        <span class="text-[10px] font-bold text-gray-400">09:05</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-gray-800">酒店 → 東涌站</h3>
-                    <p class="text-xs text-gray-500 mt-1">抵達東涌後寄放行李 (100港幣)。</p>
+                    <h3 class="font-bold text-lg text-gray-800">3/28 中環打卡之旅</h3>
+                    <p class="text-sm text-gray-500">堅尼地城、大館、石板街。</p>
                 </div>
+            </div>
 
-                <div class="bg-white p-5 rounded-japanese card-shadow border-l-8 border-blue-400">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="cat-tag cat-spot">大嶼山行程</span>
-                        <span class="text-[10px] font-bold fuji-text">10:00 - 17:00</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-gray-800">纜車、大佛與大澳漁村</h3>
-                    <div class="mt-3 space-y-2 text-xs">
-                        <div class="flex items-start gap-2 text-gray-600">
-                            <span class="bg-blue-100 text-blue-500 px-2 rounded-full font-bold">10:00</span>
-                            <span>昂坪 360 纜車 (已購票)</span>
-                        </div>
-                        <div class="flex items-start gap-2 text-gray-600">
-                            <span class="bg-blue-100 text-blue-500 px-2 rounded-full font-bold">11:20</span>
-                            <span>21號巴士 往大澳 (預計搭乘)</span>
-                        </div>
-                        <div class="flex items-start gap-2 text-gray-600">
-                            <span class="bg-blue-100 text-blue-500 px-2 rounded-full font-bold">12:30</span>
-                            <span>大澳行程 (坐船已購票、漁村市集)</span>
-                        </div>
-                        <div class="flex items-start gap-2 text-gray-600">
-                            <span class="bg-blue-100 text-blue-500 px-2 rounded-full font-bold">15:00</span>
-                            <span>21號巴士 返回昂坪 (關鍵時間)</span>
-                        </div>
-                        <div class="flex items-start gap-2 text-gray-600">
-                            <span class="bg-blue-100 text-blue-500 px-2 rounded-full font-bold">16:00</span>
-                            <span>天壇大佛、萬佛寶殿、昂坪市集</span>
-                        </div>
-                    </div>
-                    
-                    <!-- 必吃清單 -->
-                    <div class="mt-4 bg-gray-50 p-3 rounded-2xl">
-                        <p class="text-[10px] font-bold text-fuji mb-2">✓ 必買/必吃清單</p>
-                        <div class="grid grid-cols-2 gap-2 text-[11px]">
-                            <label class="flex items-center space-x-2"><input type="checkbox"> <span>Bakehouse 蛋塔</span></label>
-                            <label class="flex items-center space-x-2"><input type="checkbox"> <span>大澳沙翁/魚蛋</span></label>
-                            <label class="flex items-center space-x-2"><input type="checkbox"> <span>大澳蝦膏 (伴手禮)</span></label>
-                        </div>
-                    </div>
+            <div id="content-d4" class="day-content hidden fade-in space-y-4">
+                <div class="bg-white p-5 rounded-japanese card-shadow">
+                    <h3 class="font-bold text-lg text-gray-800">3/29 深水埗 & 返程</h3>
+                    <p class="text-sm text-gray-500">18:30 飛機 HB704。</p>
+                </div>
+            </div>
+        </div>
 
-                    <!-- 新增照片區塊 -->
-                    <div class="mt-4 border-t pt-3">
-                        <p class="text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase">旅記照片 (如：21巴士時間)</p>
-                        <div id="photo-container-d2" class="flex gap-2 overflow-x-auto no-scrollbar pb-1
+        <div id="guide-section" class="hidden fade-in px-4">指南內容...</div>
+        <div id="weather-section" class="hidden fade-in px-4">天氣內容...</div>
+    </main>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] h-20 rounded-japanese bottom-nav-glass card-shadow flex items-center justify-around px-6 z-50">
+        <button onclick="switchTab('itinerary')" class="flex flex-col items-center">
+            <div id="i-itinerary" class="text-2xl">📅</div><span class="text-[10px] font-bold text-gray-400">行程</span>
+        </button>
+        <button onclick="switchTab('guide')" class="flex flex-col items-center">
+            <div id="i-guide" class="text-2xl opacity-40">🗺️</div><span class="text-[10px] font-bold text-gray-400">指南</span>
+        </button>
+        <button onclick="switchTab('weather')" class="flex flex-col items-center">
+            <div id="i-weather" class="text-2xl opacity-40">☁️</div><span class="text-[10px] font-bold text-gray-400">天氣</span>
+        </button>
+    </nav>
+
+    <script>
+        function switchTab(tabId) {
+            document.getElementById('itinerary-section').classList.add('hidden');
+            document.getElementById('guide-section').classList.add('hidden');
+            document.getElementById('weather-section').classList.add('hidden');
+            document.getElementById(tabId + '-section').classList.remove('hidden');
+            
+            ['itinerary', 'guide', 'weather'].forEach(t => {
+                const icon = document.getElementById('i-' + t);
+                icon.classList.toggle('opacity-40', t !== tabId);
+            });
+        }
+
+        function switchDay(dayNum) {
+            document.querySelectorAll('.day-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-d' + dayNum).classList.remove('hidden');
+            
+            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active-day'));
+            document.getElementById('d' + dayNum).classList.add('active-day');
+        }
+
+        function handlePhotoUpload(input, containerId) {
+            const container = document.getElementById(containerId);
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'photo-preview';
+                        img.onclick = function() { if(confirm('刪除？')) this.remove(); };
+                        container.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
