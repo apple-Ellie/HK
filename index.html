@@ -3,42 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong Trip 2026</title>
+    <title>HK Trip App</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        function switchDay(dayNum) {
-            // 隱藏所有天數內容
+        function switchDay(n) {
+            // 隱藏所有
             document.querySelectorAll('.day-content').forEach(c => c.style.display = 'none');
-            // 顯示目標天數
-            const target = document.getElementById('content-d' + dayNum);
-            if (target) target.style.display = 'block';
-            
-            // 更新按鈕樣式
+            // 顯示目標
+            document.getElementById('content-d' + n).style.display = 'block';
+            // 按鈕顏色切換
             document.querySelectorAll('.day-btn').forEach(b => {
-                b.classList.remove('bg-[#6699CC]', 'text-white');
-                b.classList.add('bg-white', 'text-gray-400');
+                b.style.backgroundColor = 'white';
+                b.style.color = '#999';
             });
-            const activeBtn = document.getElementById('d' + dayNum);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-[#6699CC]', 'text-white');
-                activeBtn.classList.remove('text-gray-400');
-            }
+            document.getElementById('d' + n).style.backgroundColor = '#6699CC';
+            document.getElementById('d' + n).style.color = 'white';
         }
-
-        function switchTab(tabId) {
-            document.getElementById('itinerary-section').style.display = 'none';
-            document.getElementById('guide-section').style.display = 'none';
-            document.getElementById('weather-section').style.display = 'none';
-            document.getElementById(tabId + '-section').style.display = 'block';
-            
-            ['itinerary', 'guide', 'weather'].forEach(t => {
-                document.getElementById('i-' + t).style.opacity = (t === tabId) ? '1' : '0.4';
-            });
+        function switchTab(t) {
+            document.getElementById('itinerary-section').style.display = (t === 'itinerary' ? 'block' : 'none');
+            document.getElementById('guide-section').style.display = (t === 'guide' ? 'block' : 'none');
+            document.getElementById('weather-section').style.display = (t === 'weather' ? 'block' : 'none');
+            document.getElementById('i-itinerary').style.opacity = (t === 'itinerary' ? '1' : '0.4');
+            document.getElementById('i-guide').style.opacity = (t === 'guide' ? '1' : '0.4');
+            document.getElementById('i-weather').style.opacity = (t === 'weather' ? '1' : '0.4');
         }
-
-        function handlePhotoUpload(input, containerId) {
-            const container = document.getElementById(containerId);
+        function handlePhoto(input, id) {
+            const container = document.getElementById(id);
             if (input.files) {
                 Array.from(input.files).forEach(file => {
                     const reader = new FileReader();
@@ -46,7 +37,6 @@
                         const img = document.createElement('img');
                         img.src = e.target.result;
                         img.className = 'w-20 h-20 object-cover rounded-xl border-2 border-white shadow-sm flex-shrink-0';
-                        img.onclick = function() { if(confirm('刪除這張照片？')) this.remove(); };
                         container.appendChild(img);
                     }
                     reader.readAsDataURL(file);
@@ -55,10 +45,9 @@
         }
     </script>
     <style>
-        body { font-family: 'Zen Maru Gothic', sans-serif; background-color: #F5F5F5; -webkit-tap-highlight-color: transparent; }
-        .rounded-japanese { border-radius: 28px; }
-        .cat-tag { font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 99px; color: white; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background-color: #F5F5F5; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .cat-tag { font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 99px; color: white; display: inline-block; margin-bottom: 8px; }
     </style>
 </head>
 <body class="pb-32">
@@ -67,6 +56,116 @@
         <div class="flex justify-between items-end">
             <div>
                 <h1 class="text-2xl font-bold tracking-widest uppercase">Hong Kong Trip</h1>
-                <p class="text-xs opacity-80 mt-1">2026.03.26 - 03.29 · 4 Days</p>
+                <p class="text-xs opacity-80">2026.03.26 - 03.29 · 4 Days</p>
             </div>
-            <div class="bg-white/2
+            <div class="bg-white/20 p-2 rounded-xl text-center min-w-[70px]">
+                <p class="text-[10px]">住宿</p>
+                <p class="text-xs font-bold">登臺酒店</p>
+            </div>
+        </div>
+        <div class="flex justify-around mt-6 bg-white/10 rounded-full p-1 text-sm font-bold">
+            <button onclick="switchTab('itinerary')" class="flex-1 py-2">行程</button>
+            <button onclick="switchTab('guide')" class="flex-1 py-2 opacity-60">指南</button>
+            <button onclick="switchTab('weather')" class="flex-1 py-2 opacity-60">天氣</button>
+        </div>
+    </header>
+
+    <main class="mt-4 px-4">
+        <div id="itinerary-section">
+            <div class="flex space-x-3 overflow-x-auto py-2 no-scrollbar mb-4">
+                <button onclick="switchDay(1)" id="d1" class="day-btn flex-shrink-0 w-16 h-16 rounded-[24px] bg-[#6699CC] text-white shadow-md flex flex-col items-center justify-center">
+                    <span class="text-[10px]">3/26</span><span class="text-lg font-bold">D1</span>
+                </button>
+                <button onclick="switchDay(2)" id="d2" class="day-btn flex-shrink-0 w-16 h-16 rounded-[24px] bg-white text-gray-400 shadow-sm flex flex-col items-center justify-center">
+                    <span class="text-[10px]">3/27</span><span class="text-lg font-bold">D2</span>
+                </button>
+                <button onclick="switchDay(3)" id="d3" class="day-btn flex-shrink-0 w-16 h-16 rounded-[24px] bg-white text-gray-400 shadow-sm flex flex-col items-center justify-center">
+                    <span class="text-[10px]">3/28</span><span class="text-lg font-bold">D3</span>
+                </button>
+                <button onclick="switchDay(4)" id="d4" class="day-btn flex-shrink-0 w-16 h-16 rounded-[24px] bg-white text-gray-400 shadow-sm flex flex-col items-center justify-center">
+                    <span class="text-[10px]">3/29</span><span class="text-lg font-bold">D4</span>
+                </button>
+            </div>
+
+            <div id="content-d1" class="day-content space-y-4">
+                <div class="bg-white p-5 rounded-[24px] shadow-sm border-l-8 border-[#6699CC]">
+                    <span class="cat-tag bg-blue-500">航班 HB705</span>
+                    <h3 class="font-bold text-lg">桃園 T1 → 香港機場</h3>
+                    <p class="text-xs text-gray-500">21:45-23:35 | 去程無托運 7KG</p>
+                    <p class="text-xs text-gray-500 mt-2"><b>住宿：</b>麗豪航天城酒店 (接駁 0:00/0:15/0:30)</p>
+                </div>
+            </div>
+
+            <div id="content-d2" class="day-content hidden space-y-4">
+                <div class="bg-white p-5 rounded-[24px] shadow-sm border-l-8 border-blue-400">
+                    <span class="cat-tag bg-blue-400">大嶼山行程</span>
+                    <h3 class="font-bold text-lg">纜車、大佛與大澳漁村</h3>
+                    <p class="text-xs text-gray-500 mb-2">09:05 接駁東涌 | 11:20 巴士至大澳 | 15:00 巴士回程</p>
+                    <div id="photo-container-d2" class="flex gap-2 overflow-x-auto no-scrollbar py-2"></div>
+                    <input type="file" id="photo-input-d2" accept="image/*" multiple class="hidden" onchange="handlePhoto(this, 'photo-container-d2')">
+                    <button onclick="document.getElementById('photo-input-d2').click()" class="w-full py-2 bg-blue-50 border border-dashed border-blue-300 rounded-xl text-[11px] font-bold text-blue-500">📷 點擊新增巴士時刻表照片</button>
+                </div>
+                <div class="bg-white p-5 rounded-[24px] shadow-sm">
+                    <span class="cat-tag bg-pink-300">美食</span>
+                    <h3 class="font-bold">佐敦入住 & 晚餐</h3>
+                    <p class="text-xs text-gray-500">登臺酒店 | 麥文記麵家、佳佳甜品</p>
+                </div>
+            </div>
+
+            <div id="content-d3" class="day-content hidden space-y-4">
+                <div class="bg-white p-5 rounded-[24px] shadow-sm border-l-8 border-pink-400">
+                    <span class="cat-tag bg-pink-400">中環馬拉松</span>
+                    <h3 class="font-bold text-lg">港島美拍一日遊</h3>
+                    <div class="text-xs space-y-2 mt-2 text-gray-600">
+                        <p>• 08:00 澳洲牛奶公司</p>
+                        <p>• 09:30 堅尼地城拍海 / 明信片</p>
+                        <p>• 13:00 蓮香樓飲茶 (已訂位)</p>
+                        <p>• 打卡：大館、手扶梯、石板街、藝穗會</p>
+                        <p>• 傍晚：金鐘海濱小電視、摩天輪</p>
+                    </div>
+                </div>
+                <div class="bg-[#D9EAF7] p-5 rounded-[24px] shadow-sm">
+                    <h3 class="font-bold text-black italic">🎡 摩天輪 & H2K 巴士</h3>
+                    <p class="text-xs text-gray-700 mt-1">找富豪雪糕車，碼頭搭觀光巴士回尖沙咀</p>
+                </div>
+            </div>
+
+            <div id="content-d4" class="day-content hidden space-y-4">
+                <div class="bg-white p-5 rounded-[24px] shadow-sm border-l-8 border-green-400">
+                    <span class="cat-tag bg-green-400">深水埗</span>
+                    <h3 class="font-bold text-lg">老區巡禮 & 巧佳小巴</h3>
+                    <p class="text-xs text-gray-500">09:30 麥師傅小巴牌 | 合益泰腸粉 | 公和荳品</p>
+                </div>
+                <div class="bg-gray-800 text-white p-5 rounded-[24px] shadow-sm">
+                    <span class="cat-tag bg-red-400">航班 HB704</span>
+                    <h3 class="font-bold mt-1 text-lg">18:30 起飛 (16:00 到機場)</h3>
+                    <p class="text-xs opacity-80 mt-1">※ 包含 20KG 托運！</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="guide-section" class="hidden p-6 bg-yellow-50 rounded-[24px] border border-yellow-100">
+            <h3 class="font-bold text-yellow-700">🧳 旅遊提醒</h3>
+            <p class="text-sm mt-2 text-yellow-600 leading-relaxed">去程手提 7KG / 回程托運 20KG<br>八達通手機版加值、英規轉接頭</p>
+        </div>
+
+        <div id="weather-section" class="hidden text-center p-10 bg-white rounded-[24px]">
+            <div class="text-6xl">🌤️</div>
+            <h2 class="text-3xl font-bold mt-4 text-gray-700">22°C</h2>
+            <p class="text-gray-400">香港 3 月預測 · 適合出遊</p>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] h-20 rounded-[28px] bg-white/90 backdrop-blur-md shadow-xl flex items-center justify-around z-50">
+        <button onclick="switchTab('itinerary')" class="flex flex-col items-center">
+            <div id="i-itinerary" class="text-2xl">📅</div><span class="text-[10px] font-bold text-gray-400">行程</span>
+        </button>
+        <button onclick="switchTab('guide')" class="flex flex-col items-center">
+            <div id="i-guide" style="opacity:0.4;" class="text-2xl">🗺️</div><span class="text-[10px] font-bold text-gray-400">指南</span>
+        </button>
+        <button onclick="switchTab('weather')" class="flex flex-col items-center">
+            <div id="i-weather" style="opacity:0.4;" class="text-2xl">☁️</div><span class="text-[10px] font-bold text-gray-400">天氣</span>
+        </button>
+    </nav>
+</body>
+</html>
